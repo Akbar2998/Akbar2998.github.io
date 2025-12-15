@@ -1,0 +1,6 @@
+# robots.txt for https://akbar2998.github.io/
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://akbar2998.github.io/sitemap.xml

@@ -1,19 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Essential Meta Tags -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Akbar Makhmanazarov - IT Specialist | Web Developer | Cyber Security Specialist">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- Primary Meta Tags -->
+    <title>Akbar Makhmanazarov | Cyber Security Expert & IT Specialist</title>
+    <meta name="title" content="Akbar Makhmanazarov | Cyber Security Expert & IT Specialist">
+    <meta name="description" content="27-year-old IT Specialist and Cyber Security Expert based in Tashkent, Uzbekistan. Specializing in penetration testing, network security, Kali Linux, Wireshark, NMAP, BurpSuite, and ethical hacking.">
+    <meta name="keywords" content="Akbar Makhmanazarov, Cyber Security, Penetration Testing, Kali Linux, Network Security, IT Specialist, Ethical Hacker, Wireshark, NMAP, BurpSuite, Cisco, TCP/IP, Tashkent, Uzbekistan">
     <meta name="author" content="Akbar Makhmanazarov">
-    <title>Akbar Makhmanazarov | Cyber Security & Tech Portfolio</title>
-    <link rel="stylesheet" href="styles.css">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="English">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://akbar2998.github.io/">
+    <meta property="og:title" content="Akbar Makhmanazarov | Cyber Security Expert & IT Specialist">
+    <meta property="og:description" content="Cyber Security Expert specializing in penetration testing, network security, and ethical hacking. Based in Tashkent, Uzbekistan.">
+    <meta property="og:image" content="https://akbar2998.github.io/assets/img/profile.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://akbar2998.github.io/">
+    <meta property="twitter:title" content="Akbar Makhmanazarov | Cyber Security Expert">
+    <meta property="twitter:description" content="Cyber Security Expert specializing in penetration testing, network security, and ethical hacking.">
+    <meta property="twitter:image" content="https://akbar2998.github.io/assets/img/profile.jpg">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png">
+
+    <!-- Stylesheets -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+
+    <!-- Modular CSS -->
+    <link rel="stylesheet" href="assets/css/variables.css">
+    <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+    <link rel="stylesheet" href="assets/css/layout.css">
+    <link rel="stylesheet" href="assets/css/animations.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Akbar Makhmanazarov",
+        "jobTitle": "Cyber Security Expert & IT Specialist",
+        "url": "https://akbar2998.github.io",
+        "sameAs": [
+            "https://github.com/Akbar2998",
+            "https://linkedin.com/in/zarasoft",
+            "https://twitter.com/onesm1le"
+        ],
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Tashkent",
+            "addressCountry": "Uzbekistan"
+        },
+        "alumniOf": {
+            "@type": "Organization",
+            "name": "University of Szeged"
+        },
+        "knowsAbout": ["Cyber Security", "Penetration Testing", "Network Security", "Kali Linux", "Ethical Hacking", "IT Infrastructure"]
+    }
+    </script>
 </head>
 <body>
     <!-- Navigation -->
     <nav class="navbar" id="navbar">
         <div class="nav-container">
-            <a href="#home" class="nav-logo">
+            <a href="#home" class="nav-logo" aria-label="Home">
                 <span class="logo-bracket">&lt;</span>
                 <span class="logo-text">Akbar</span>
                 <span class="logo-bracket">/&gt;</span>
@@ -26,7 +92,7 @@
                 <a href="#achievements" class="nav-link">Achievements</a>
                 <a href="#contact" class="nav-link">Contact</a>
             </div>
-            <div class="hamburger" id="hamburger">
+            <div class="hamburger" id="hamburger" aria-label="Toggle navigation menu">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -36,14 +102,14 @@
 
     <!-- Hero Section -->
     <section id="home" class="hero">
-        <canvas id="matrix-canvas"></canvas>
+        <canvas id="matrix-canvas" aria-hidden="true"></canvas>
         <div class="hero-content">
             <div class="glitch-wrapper">
                 <h1 class="hero-title" data-text="Akbar Makhmanazarov">Akbar Makhmanazarov</h1>
             </div>
             <div class="typing-container">
                 <span class="typing-text">IT Specialist</span>
-                <span class="cursor">|</span>
+                <span class="cursor" aria-hidden="true">|</span>
             </div>
             <p class="hero-subtitle">Securing systems, networks, and the future of technology</p>
             <div class="hero-buttons">
@@ -57,21 +123,21 @@
                 </a>
             </div>
             <div class="social-links">
-                <a href="https://github.com/Akbar2998" target="_blank" class="social-icon" title="GitHub">
+                <a href="https://github.com/Akbar2998" target="_blank" rel="noopener noreferrer" class="social-icon" title="GitHub" aria-label="GitHub Profile">
                     <i class="fab fa-github"></i>
                 </a>
-                <a href="https://linkedin.com/in/zarasoft" target="_blank" class="social-icon" title="LinkedIn">
+                <a href="https://linkedin.com/in/zarasoft" target="_blank" rel="noopener noreferrer" class="social-icon" title="LinkedIn" aria-label="LinkedIn Profile">
                     <i class="fab fa-linkedin"></i>
                 </a>
-                <a href="https://twitter.com/onesm1le" target="_blank" class="social-icon" title="Twitter">
+                <a href="https://twitter.com/onesm1le" target="_blank" rel="noopener noreferrer" class="social-icon" title="Twitter" aria-label="Twitter Profile">
                     <i class="fab fa-twitter"></i>
                 </a>
-                <a href="mailto:akbar.uzatom@mail.ru" class="social-icon" title="Email">
+                <a href="mailto:akbar.uzatom@mail.ru" class="social-icon" title="Email" aria-label="Send Email">
                     <i class="fas fa-envelope"></i>
                 </a>
             </div>
         </div>
-        <div class="scroll-indicator">
+        <div class="scroll-indicator" aria-hidden="true">
             <div class="mouse">
                 <div class="wheel"></div>
             </div>
@@ -91,7 +157,7 @@
                 <div class="about-text">
                     <p class="about-intro">
                         Hello! I'm <span class="highlight">Akbar Makhmanazarov</span>, a 27-year-old IT Specialist based in
-                        <span class="highlight">Szeged, Hungary</span>, originally from Uzbekistan.
+                        <span class="highlight">Tashkent, Uzbekistan</span>, currently pursuing my Master's in Computer Science in Hungary.
                     </p>
                     <p>
                         Currently pursuing my <strong>Master's degree in Computer Science</strong> at the University of Szeged (SZTE),
@@ -125,7 +191,7 @@
                 <div class="about-image">
                     <div class="image-wrapper">
                         <div class="image-border"></div>
-                        <img src="profile.jpg" alt="Akbar Makhmanazarov" class="profile-photo">
+                        <img src="assets/img/profile.jpg" alt="Akbar Makhmanazarov - Cyber Security Expert" class="profile-photo" loading="lazy">
                     </div>
                 </div>
             </div>
@@ -509,7 +575,7 @@
                         <i class="fas fa-map-marker-alt"></i>
                         <div>
                             <h4>Location</h4>
-                            <p>Szeged, Hungary</p>
+                            <p>Tashkent, Uzbekistan</p>
                         </div>
                     </div>
                     <div class="contact-item" data-aos="fade-up" data-aos-delay="200">
@@ -521,19 +587,19 @@
                     </div>
                 </div>
                 <div class="contact-social">
-                    <a href="https://github.com/Akbar2998" target="_blank" class="social-btn">
+                    <a href="https://github.com/Akbar2998" target="_blank" rel="noopener noreferrer" class="social-btn">
                         <i class="fab fa-github"></i>
                         <span>GitHub</span>
                     </a>
-                    <a href="https://linkedin.com/in/zarasoft" target="_blank" class="social-btn">
+                    <a href="https://linkedin.com/in/zarasoft" target="_blank" rel="noopener noreferrer" class="social-btn">
                         <i class="fab fa-linkedin"></i>
                         <span>LinkedIn</span>
                     </a>
-                    <a href="https://twitter.com/onesm1le" target="_blank" class="social-btn">
+                    <a href="https://twitter.com/onesm1le" target="_blank" rel="noopener noreferrer" class="social-btn">
                         <i class="fab fa-twitter"></i>
                         <span>Twitter</span>
                     </a>
-                    <a href="https://www.facebook.com/akbar.maxmanazarov" target="_blank" class="social-btn">
+                    <a href="https://www.facebook.com/akbar.maxmanazarov" target="_blank" rel="noopener noreferrer" class="social-btn">
                         <i class="fab fa-facebook"></i>
                         <span>Facebook</span>
                     </a>
@@ -554,6 +620,9 @@
 
     <!-- Scripts -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="script.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/matrix.js"></script>
+    <script src="assets/js/navigation.js"></script>
+    <script src="assets/js/animations.js"></script>
 </body>
 </html>

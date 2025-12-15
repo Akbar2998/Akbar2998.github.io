@@ -1,0 +1,82 @@
+/**
+ * CSS Variables - Design System
+ * Cybersecurity themed color palette and design tokens
+ */
+
+:root {
+    /* Color Palette - Hacker/Terminal Theme */
+    --primary-color: #00ff41;
+    --secondary-color: #00ffff;
+    --accent-color: #ff0080;
+    --hacker-green: #00ff41;
+    --terminal-green: #33ff33;
+
+    /* Background Colors */
+    --bg-dark: #000000;
+    --bg-darker: #0a0a0a;
+    --bg-card: rgba(10, 20, 15, 0.85);
+
+    /* Text Colors */
+    --text-primary: #00ff41;
+    --text-secondary: #a0ffa0;
+    --text-muted: #607060;
+    --text-white: #ffffff;
+
+    /* Border & Effects */
+    --border-color: rgba(0, 255, 65, 0.3);
+    --shadow-glow: 0 0 20px rgba(0, 255, 65, 0.4);
+    --shadow-glow-strong: 0 0 30px rgba(0, 255, 65, 0.6);
+
+    /* Transitions */
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-fast: all 0.15s ease;
+    --transition-slow: all 0.5s ease;
+
+    /* Spacing */
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 2rem;
+    --spacing-lg: 4rem;
+    --spacing-xl: 6rem;
+
+    /* Typography */
+    --font-primary: 'Poppins', sans-serif;
+    --font-code: 'Fira Code', monospace;
+
+    --font-size-xs: 0.75rem;
+    --font-size-sm: 0.875rem;
+    --font-size-base: 1rem;
+    --font-size-lg: 1.125rem;
+    --font-size-xl: 1.25rem;
+    --font-size-2xl: 1.5rem;
+    --font-size-3xl: 2rem;
+    --font-size-4xl: 3rem;
+
+    /* Border Radius */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 15px;
+    --radius-xl: 20px;
+    --radius-full: 50%;
+
+    /* Z-Index Scale */
+    --z-dropdown: 1000;
+    --z-sticky: 1020;
+    --z-fixed: 1030;
+    --z-modal: 1040;
+    --z-popover: 1050;
+    --z-tooltip: 1060;
+
+    /* Container */
+    --container-max-width: 1200px;
+
+    /* Navigation */
+    --navbar-height: 70px;
+}
+
+/* Dark mode support (default is dark) */
+@media (prefers-color-scheme: light) {
+    :root {
+        /* Keep dark theme even in light mode preference */
+    }
+}
