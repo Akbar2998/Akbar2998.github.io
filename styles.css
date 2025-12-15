@@ -2,21 +2,23 @@
 @import url('https://unpkg.com/aos@2.3.1/dist/aos.css');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap');
 
-/* CSS Variables */
+/* CSS Variables - Enhanced Cybersecurity Theme */
 :root {
-    --primary-color: #00ffff;
-    --secondary-color: #0099ff;
-    --accent-color: #ff00ff;
-    --bg-dark: #0a0a0f;
-    --bg-darker: #050508;
-    --bg-card: rgba(20, 20, 30, 0.8);
-    --text-primary: #ffffff;
-    --text-secondary: #a0a0b0;
-    --text-muted: #707080;
-    --border-color: rgba(0, 255, 255, 0.2);
-    --shadow-glow: 0 0 20px rgba(0, 255, 255, 0.3);
-    --shadow-glow-strong: 0 0 30px rgba(0, 255, 255, 0.5);
+    --primary-color: #00ff41;
+    --secondary-color: #00ffff;
+    --accent-color: #ff0080;
+    --bg-dark: #000000;
+    --bg-darker: #0a0a0a;
+    --bg-card: rgba(10, 20, 15, 0.85);
+    --text-primary: #00ff41;
+    --text-secondary: #a0ffa0;
+    --text-muted: #607060;
+    --border-color: rgba(0, 255, 65, 0.3);
+    --shadow-glow: 0 0 20px rgba(0, 255, 65, 0.4);
+    --shadow-glow-strong: 0 0 30px rgba(0, 255, 65, 0.6);
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --hacker-green: #00ff41;
+    --terminal-green: #33ff33;
 }
 
 /* Reset & Base Styles */
@@ -37,6 +39,24 @@ body {
     color: var(--text-primary);
     line-height: 1.6;
     overflow-x: hidden;
+    /* Performance optimizations */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Improve animation performance */
+* {
+    will-change: auto;
+}
+
+.hero-content,
+.timeline-item,
+.skill-category,
+.achievement-card {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
 }
 
 ::selection {
@@ -200,41 +220,45 @@ body {
 .hero-title {
     font-size: clamp(2.5rem, 8vw, 5rem);
     font-weight: 700;
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+    background: linear-gradient(135deg, var(--hacker-green), var(--secondary-color), var(--terminal-green));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    -moz-background-clip: text;
+    -moz-text-fill-color: transparent;
     margin-bottom: 0.5rem;
     position: relative;
-    animation: glow 2s ease-in-out infinite alternate;
+    animation: glow 3s ease-in-out infinite alternate;
+    text-shadow: 0 0 20px rgba(0, 255, 65, 0.5);
 }
 
 @keyframes glow {
     0% {
-        filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.5));
+        filter: drop-shadow(0 0 10px rgba(0, 255, 65, 0.6));
     }
     100% {
-        filter: drop-shadow(0 0 20px rgba(0, 255, 255, 0.8));
+        filter: drop-shadow(0 0 25px rgba(0, 255, 65, 0.9));
     }
 }
 
 .typing-container {
     font-size: clamp(1.2rem, 3vw, 1.8rem);
     font-family: 'Fira Code', monospace;
-    color: var(--primary-color);
+    color: var(--hacker-green);
     margin-bottom: 1rem;
+    text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+}
+
+.typing-container::before {
+    content: '> ';
+    color: var(--terminal-green);
 }
 
 .typing-text {
     display: inline-block;
-    border-right: 2px solid var(--primary-color);
+    border-right: 2px solid var(--hacker-green);
     padding-right: 5px;
-    animation: typing 3.5s steps(40, end), blink 0.75s step-end infinite;
-}
-
-@keyframes typing {
-    from { width: 0; }
-    to { width: 100%; }
+    animation: blink 0.75s step-end infinite;
 }
 
 @keyframes blink {
@@ -242,6 +266,7 @@ body {
 }
 
 .cursor {
+    color: var(--terminal-green);
     animation: blink 1s infinite;
 }
 
@@ -519,6 +544,22 @@ section {
 .image-wrapper:hover .image-border {
     top: 10px;
     left: 10px;
+}
+
+.profile-photo {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 15px;
+    z-index: 2;
+    filter: grayscale(30%) contrast(1.1);
+    transition: var(--transition);
+}
+
+.profile-photo:hover {
+    filter: grayscale(0%) contrast(1.2);
+    transform: scale(1.05);
 }
 
 .profile-placeholder {

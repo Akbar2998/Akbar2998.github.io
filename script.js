@@ -5,43 +5,69 @@ AOS.init({
     offset: 100
 });
 
-// Matrix Canvas Background
+// Optimized Matrix Canvas Background (Hacker Style)
 const canvas = document.getElementById('matrix-canvas');
 const ctx = canvas.getContext('2d');
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+let canvasWidth = window.innerWidth;
+let canvasHeight = window.innerHeight;
+canvas.width = canvasWidth;
+canvas.height = canvasHeight;
 
-const matrix = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+const matrix = '01ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz@#$%^&*(){}[]<>/?\\|';
 const chars = matrix.split('');
-const fontSize = 14;
-const columns = canvas.width / fontSize;
-const drops = Array(Math.floor(columns)).fill(1);
+const fontSize = 16;
+let columns = Math.floor(canvasWidth / fontSize);
+let drops = Array(columns).fill(1);
 
-function drawMatrix() {
-    ctx.fillStyle = 'rgba(10, 10, 15, 0.05)';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+// Use requestAnimationFrame for better performance
+let lastFrameTime = 0;
+const fps = 30; // Limit to 30 FPS for smoother performance
+const frameDelay = 1000 / fps;
 
-    ctx.fillStyle = '#00ffff';
-    ctx.font = fontSize + 'px monospace';
+function drawMatrix(currentTime) {
+    if (currentTime - lastFrameTime < frameDelay) {
+        requestAnimationFrame(drawMatrix);
+        return;
+    }
+    lastFrameTime = currentTime;
+
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+    ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+
+    ctx.fillStyle = '#00ff41'; // Hacker green
+    ctx.font = fontSize + 'px "Fira Code", monospace';
 
     for (let i = 0; i < drops.length; i++) {
         const text = chars[Math.floor(Math.random() * chars.length)];
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+        const x = i * fontSize;
+        const y = drops[i] * fontSize;
 
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+        ctx.fillText(text, x, y);
+
+        if (y > canvasHeight && Math.random() > 0.975) {
             drops[i] = 0;
         }
         drops[i]++;
     }
+
+    requestAnimationFrame(drawMatrix);
 }
 
-setInterval(drawMatrix, 50);
+requestAnimationFrame(drawMatrix);
 
-// Resize canvas on window resize
+// Optimized resize with debounce
+let resizeTimeout;
 window.addEventListener('resize', () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+        canvasWidth = window.innerWidth;
+        canvasHeight = window.innerHeight;
+        canvas.width = canvasWidth;
+        canvas.height = canvasHeight;
+        columns = Math.floor(canvasWidth / fontSize);
+        drops = Array(columns).fill(1);
+    }, 250);
 });
 
 // Navbar scroll effect
@@ -77,19 +103,20 @@ document.querySelectorAll('.nav-link').forEach(link => {
     });
 });
 
-// Typing animation for hero section
+// Typing animation for hero section - Cybersecurity focus
 const typingText = document.querySelector('.typing-text');
 const titles = [
     'IT Specialist',
-    'Web Developer',
-    'Data Scientist',
-    'Problem Solver',
-    'Tech Enthusiast'
+    'Cyber Security Expert',
+    'Network Engineer',
+    'Penetration Tester',
+    'Linux Enthusiast',
+    'Ethical Hacker'
 ];
 let titleIndex = 0;
 let charIndex = 0;
 let isDeleting = false;
-let typingSpeed = 150;
+let typingSpeed = 100;
 
 function typeEffect() {
     const currentTitle = titles[titleIndex];
@@ -181,13 +208,20 @@ if (aboutStats) {
     statsObserver.observe(aboutStats);
 }
 
-// Parallax effect for hero section
+// Optimized parallax effect with throttle
+let ticking = false;
 window.addEventListener('scroll', () => {
-    const scrolled = window.pageYOffset;
-    const heroContent = document.querySelector('.hero-content');
-    if (heroContent) {
-        heroContent.style.transform = `translateY(${scrolled * 0.5}px)`;
-        heroContent.style.opacity = 1 - scrolled / 600;
+    if (!ticking) {
+        window.requestAnimationFrame(() => {
+            const scrolled = window.pageYOffset;
+            const heroContent = document.querySelector('.hero-content');
+            if (heroContent && scrolled < 800) {
+                heroContent.style.transform = `translateY(${scrolled * 0.3}px)`;
+                heroContent.style.opacity = Math.max(0, 1 - scrolled / 600);
+            }
+            ticking = false;
+        });
+        ticking = true;
     }
 });
 
@@ -216,18 +250,18 @@ function setActiveNavLink() {
 
 window.addEventListener('scroll', setActiveNavLink);
 
-// Glitch effect for hero title (optional enhancement)
+// Enhanced hacker-style glitch effect
 const heroTitle = document.querySelector('.hero-title');
 if (heroTitle) {
     setInterval(() => {
         heroTitle.style.textShadow = `
-            ${Math.random() * 5 - 2.5}px ${Math.random() * 5 - 2.5}px 0 rgba(0, 255, 255, 0.7),
-            ${Math.random() * 5 - 2.5}px ${Math.random() * 5 - 2.5}px 0 rgba(255, 0, 255, 0.7)
+            ${Math.random() * 3 - 1.5}px ${Math.random() * 3 - 1.5}px 0 rgba(0, 255, 65, 0.8),
+            ${Math.random() * 3 - 1.5}px ${Math.random() * 3 - 1.5}px 0 rgba(0, 255, 255, 0.6)
         `;
         setTimeout(() => {
-            heroTitle.style.textShadow = 'none';
+            heroTitle.style.textShadow = '0 0 20px rgba(0, 255, 65, 0.5)';
         }, 50);
-    }, 3000);
+    }, 4000);
 }
 
 // Cursor trail effect (optional - can be disabled if too distracting)
@@ -307,11 +341,13 @@ function createParticle(x, y) {
     animateParticle();
 }
 
-// Easter egg: Console message
-console.log('%c👋 Hey there! Welcome to my portfolio!', 'color: #00ffff; font-size: 20px; font-weight: bold;');
-console.log('%cLike what you see? Let\'s connect!', 'color: #0099ff; font-size: 16px;');
-console.log('%cGitHub: https://github.com/Akbar2998', 'color: #00ffff; font-size: 14px;');
-console.log('%cLinkedIn: https://linkedin.com/in/zarasoft', 'color: #00ffff; font-size: 14px;');
+// Easter egg: Hacker-style Console message
+console.log('%c[!] SYSTEM ACCESS GRANTED', 'color: #00ff41; font-size: 20px; font-weight: bold; font-family: monospace;');
+console.log('%c[+] Initializing secure connection...', 'color: #00ff41; font-size: 16px; font-family: monospace;');
+console.log('%c[+] Welcome to Akbar\'s Cyber Portfolio', 'color: #00ff41; font-size: 16px; font-family: monospace;');
+console.log('%c[*] GitHub: https://github.com/Akbar2998', 'color: #33ff33; font-size: 14px; font-family: monospace;');
+console.log('%c[*] LinkedIn: https://linkedin.com/in/zarasoft', 'color: #33ff33; font-size: 14px; font-family: monospace;');
+console.log('%c[!] Connection established. Ready for collaboration.', 'color: #00ff41; font-size: 14px; font-family: monospace;');
 
 // Loading animation (optional - add if you want a loading screen)
 window.addEventListener('load', () => {
