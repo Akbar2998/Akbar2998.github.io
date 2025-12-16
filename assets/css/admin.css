@@ -471,3 +471,40 @@ textarea.form-control {
         width: 100%;
     }
 }
+
+/* ===========================
+   SETTINGS
+   =========================== */
+
+.settings-container {
+    display: grid;
+    gap: 30px;
+    max-width: 800px;
+}
+
+.setting-card {
+    background: rgba(10, 20, 15, 0.8);
+    border: 1px solid rgba(0, 255, 65, 0.3);
+    border-radius: 12px;
+    padding: 30px;
+}
+
+.setting-card h3 {
+    color: #00ff41;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.setting-description {
+    color: #a0ffa0;
+    margin-bottom: 20px;
+}
+
+.form-hint {
+    display: block;
+    margin-top: 5px;
+    color: #607060;
+    font-size: 0.85rem;
+}

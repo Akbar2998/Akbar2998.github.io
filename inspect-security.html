@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Inspector</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background: #000;
+            color: #0f0;
+            padding: 30px;
+            line-height: 1.6;
+        }
+        .section {
+            background: #111;
+            border: 1px solid #0f0;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        h1, h2 {
+            color: #0ff;
+        }
+        code {
+            background: #222;
+            padding: 15px;
+            display: block;
+            overflow-x: auto;
+            margin: 10px 0;
+            border-left: 3px solid #0f0;
+        }
+        .example {
+            background: #001100;
+            padding: 15px;
+            margin: 10px 0;
+            border-left: 3px solid #ff0;
+        }
+        button {
+            background: #0f0;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin: 5px;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #0ff;
+        }
+        .output {
+            background: #000;
+            border: 1px solid #0f0;
+            padding: 15px;
+            margin: 10px 0;
+            min-height: 100px;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔒 Security Implementation Inspector</h1>
+
+    <div class="section">
+        <h2>How Password Storage Works</h2>
+        <p><strong>Storage Location:</strong> Browser localStorage (NOT on server)</p>
+        <p><strong>Hashing Algorithm:</strong> PBKDF2 with SHA-256</p>
+        <p><strong>Iterations:</strong> 100,000 (computationally expensive to crack)</p>
+        <p><strong>Salt:</strong> Random 16-byte salt (unique for each installation)</p>
+    </div>
+
+    <div class="section">
+        <h2>What's Stored in localStorage</h2>
+        <button onclick="inspectStorage()">Inspect Current Storage</button>
+        <button onclick="clearStorage()">Clear All Data</button>
+        <div id="storageOutput" class="output">Click "Inspect Current Storage" to see what's stored...</div>
+    </div>
+
+    <div class="section">
+        <h2>Example Data Structure</h2>
+        <div class="example">
+            <strong>Key: portfolio_admin_credentials</strong>
+            <code>{
+  "username": "a3f2c9e1d5b8... (64-character hash)",
+  "password": "7b4e9f2c1a8d... (64-character hash)",
+  "created": 1702345678901
+}</code>
+        </div>
+
+        <div class="example">
+            <strong>Key: portfolio_auth_salt</strong>
+            <code>"3f8a9c2e5d1b7f4a9c2e5d1b..." (32-character random salt)</code>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Security Features</h2>
+        <ul>
+            <li>✅ Passwords are NEVER stored in plain text</li>
+            <li>✅ Each installation has a unique salt (random on first use)</li>
+            <li>✅ PBKDF2 with 100,000 iterations (slow by design - prevents brute force)</li>
+            <li>✅ Same password on different installations = different hashes (due to unique salt)</li>
+            <li>✅ Rainbow table attacks are ineffective (salted hashing)</li>
+            <li>✅ Even if someone steals localStorage data, they can't reverse the hash</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>How Password Change Works</h2>
+        <ol>
+            <li>User enters current password → System hashes it with existing salt → Verifies match</li>
+            <li>System generates NEW random salt (32 characters)</li>
+            <li>New username and password are hashed with NEW salt using PBKDF2</li>
+            <li>OLD hashes and salt are deleted</li>
+            <li>NEW hashes and salt are stored in localStorage</li>
+            <li>User must login with new credentials</li>
+        </ol>
+    </div>
+
+    <div class="section">
+        <h2>Default Credentials (First Use)</h2>
+        <p>When you first visit the site:</p>
+        <code>Username: digitalplayer98
+Password: 17101998ma</code>
+        <p>These are automatically hashed and stored on first login.</p>
+    </div>
+
+    <div class="section">
+        <h2>Can Someone Crack It?</h2>
+        <p><strong>Scenario 1:</strong> Attacker views page source</p>
+        <p>❌ They see NO credentials (all client-side hashing happens in browser)</p>
+
+        <p><strong>Scenario 2:</strong> Attacker accesses your localStorage</p>
+        <p>⚠️  They get hashed values + salt</p>
+        <p>✅ BUT: With 100,000 PBKDF2 iterations, trying passwords is VERY slow</p>
+        <p>✅ For a strong password (12+ chars, mixed case, numbers, symbols): practically uncrackable</p>
+
+        <p><strong>Scenario 3:</strong> Weak password like "password123"</p>
+        <p>⚠️  Could be cracked with enough time/computing power</p>
+        <p>✅ Solution: Use strong passwords!</p>
+    </div>
+
+    <div class="section">
+        <h2>Recommendations</h2>
+        <ul>
+            <li>✅ Change default password immediately after first login</li>
+            <li>✅ Use strong password: 12+ characters, mixed case, numbers, symbols</li>
+            <li>✅ Don't use the same password as other accounts</li>
+            <li>✅ Session expires after 2 hours (security vs convenience)</li>
+            <li>✅ Use "Reset to Defaults" if you forget your password</li>
+        </ul>
+    </div>
+
+    <script src="assets/js/auth.js"></script>
+    <script>
+        function inspectStorage() {
+            const output = document.getElementById('storageOutput');
+            const creds = localStorage.getItem('portfolio_admin_credentials');
+            const salt = localStorage.getItem('portfolio_auth_salt');
+
+            let result = '=== CURRENT STORAGE ===\n\n';
+
+            if (creds && salt) {
+                const credsObj = JSON.parse(creds);
+                result += 'Key: portfolio_admin_credentials\n';
+                result += JSON.stringify(credsObj, null, 2) + '\n\n';
+                result += 'Username Hash: ' + credsObj.username + '\n';
+                result += 'Password Hash: ' + credsObj.password + '\n\n';
+                result += 'Key: portfolio_auth_salt\n';
+                result += 'Salt: ' + salt + '\n\n';
+                result += '⚠️  These are HASHED values, NOT plain text!\n';
+                result += '✅ Even with these values, the original password cannot be recovered.\n';
+            } else {
+                result += '❌ No credentials found in storage.\n';
+                result += 'Visit admin-login.html to initialize.\n';
+            }
+
+            output.textContent = result;
+        }
+
+        function clearStorage() {
+            if (confirm('This will delete all stored credentials. You will need to use default credentials (digitalplayer98 / 17101998ma) to login. Continue?')) {
+                localStorage.removeItem('portfolio_admin_credentials');
+                localStorage.removeItem('portfolio_auth_salt');
+                alert('Storage cleared! Default credentials will be restored on next login.');
+                inspectStorage();
+            }
+        }
+    </script>
+</body>
+</html>

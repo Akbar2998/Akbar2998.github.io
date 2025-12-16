@@ -2,35 +2,16 @@
  * Admin Dashboard JavaScript
  */
 
-// Check authentication with session timeout
+// Check authentication using secure auth system
 function checkAuth() {
-    const authToken = sessionStorage.getItem('adminAuth');
-    const adminUser = sessionStorage.getItem('adminUser');
-    const authTimestamp = sessionStorage.getItem('authTimestamp');
-
-    // Check if auth token exists
-    if (!authToken || !adminUser || !authTimestamp) {
-        window.location.href = 'admin-login.html';
-        return false;
-    }
-
-    // Check session timeout (2 hours)
-    const SESSION_TIMEOUT = 2 * 60 * 60 * 1000; // 2 hours in milliseconds
-    const currentTime = Date.now();
-    const sessionAge = currentTime - parseInt(authTimestamp);
-
-    if (sessionAge > SESSION_TIMEOUT) {
-        // Session expired
-        sessionStorage.clear();
+    if (!secureAuth.validateSession()) {
         alert('Session expired. Please login again.');
         window.location.href = 'admin-login.html';
         return false;
     }
 
-    // Update timestamp to keep session alive
-    sessionStorage.setItem('authTimestamp', currentTime.toString());
-
     // Display admin username
+    const adminUser = sessionStorage.getItem('adminUser');
     const usernameEl = document.getElementById('adminUsername');
     if (usernameEl && adminUser) {
         usernameEl.textContent = adminUser;
@@ -76,6 +57,12 @@ function setupEventListeners() {
     if (excerptInput) {
         excerptInput.addEventListener('input', updateCharCount);
     }
+
+    // Password change form
+    const changePasswordForm = document.getElementById('changePasswordForm');
+    if (changePasswordForm) {
+        changePasswordForm.addEventListener('submit', handlePasswordChange);
+    }
 }
 
 // Switch tabs
@@ -97,6 +84,8 @@ function switchTab(tabName) {
         document.getElementById('postsTab').classList.add('active');
     } else if (tabName === 'new-post') {
         document.getElementById('newPostTab').classList.add('active');
+    } else if (tabName === 'settings') {
+        document.getElementById('settingsTab').classList.add('active');
     }
 }
 
@@ -253,18 +242,84 @@ function showToast(message, type = 'success') {
     }
 }
 
-// Logout
-function logout() {
-    if (confirm('Are you sure you want to logout?')) {
-        sessionStorage.removeItem('adminAuth');
-        sessionStorage.removeItem('adminUser');
-        window.location.href = 'admin-login.html';
-    }
-}
-
 // Initialize when DOM is ready
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initDashboard);
 } else {
     initDashboard();
+}
+
+// Handle password change
+async function handlePasswordChange(e) {
+    e.preventDefault();
+
+    const currentPassword = document.getElementById('currentPassword').value;
+    const newUsername = document.getElementById('newUsername').value.trim();
+    const newPassword = document.getElementById('newPassword').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+
+    // Validate
+    if (!currentPassword || !newUsername || !newPassword || !confirmPassword) {
+        showToast('Please fill in all fields', 'error');
+        return;
+    }
+
+    if (newPassword !== confirmPassword) {
+        showToast('New passwords do not match', 'error');
+        return;
+    }
+
+    if (newPassword.length < 8) {
+        showToast('Password must be at least 8 characters', 'error');
+        return;
+    }
+
+    try {
+        // Change password using secure auth
+        await secureAuth.changePassword(currentPassword, newUsername, newPassword);
+
+        showToast('Credentials updated successfully! Please login with new credentials.');
+
+        // Reset form
+        resetPasswordForm();
+
+        // Logout and redirect to login
+        setTimeout(() => {
+            logout();
+        }, 2000);
+    } catch (error) {
+        console.error('Password change error:', error);
+        showToast(error.message || 'Failed to update credentials', 'error');
+    }
+}
+
+// Reset password form
+function resetPasswordForm() {
+    const form = document.getElementById('changePasswordForm');
+    if (form) {
+        form.reset();
+    }
+}
+
+// Reset to default credentials
+async function resetToDefaults() {
+    try {
+        const success = await secureAuth.resetToDefaults();
+        if (success) {
+            showToast('Credentials reset successfully!');
+            setTimeout(() => {
+                logout();
+            }, 2000);
+        }
+    } catch (error) {
+        showToast('Failed to reset credentials', 'error');
+    }
+}
+
+// Logout
+function logout() {
+    if (confirm('Are you sure you want to logout?')) {
+        secureAuth.destroySession();
+        window.location.href = 'admin-login.html';
+    }
 }
