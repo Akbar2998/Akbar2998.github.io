@@ -1,10 +1,10 @@
 /**
  * CSS Variables - Design System
- * Cybersecurity themed color palette and design tokens
+ * Cybersecurity themed color palette and design tokens with multiple theme support
  */
 
 :root {
-    /* Color Palette - Hacker/Terminal Theme */
+    /* Default Theme: Cyber Green (Hacker Terminal) */
     --primary-color: #00ff41;
     --secondary-color: #00ffff;
     --accent-color: #ff0080;
@@ -15,6 +15,8 @@
     --bg-dark: #000000;
     --bg-darker: #0a0a0a;
     --bg-card: rgba(10, 20, 15, 0.85);
+    --bg-gradient-1: rgba(0, 255, 65, 0.1);
+    --bg-gradient-2: rgba(0, 255, 65, 0.05);
 
     /* Text Colors */
     --text-primary: #00ff41;
@@ -26,6 +28,7 @@
     --border-color: rgba(0, 255, 65, 0.3);
     --shadow-glow: 0 0 20px rgba(0, 255, 65, 0.4);
     --shadow-glow-strong: 0 0 30px rgba(0, 255, 65, 0.6);
+    --shadow-glow-intense: 0 0 40px rgba(0, 255, 65, 0.8);
 
     /* Transitions */
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -79,4 +82,108 @@
     :root {
         /* Keep dark theme even in light mode preference */
     }
+}
+
+/* ===========================
+   THEME VARIATIONS
+   =========================== */
+
+/* Theme: Neon Purple (Cyberpunk) */
+[data-theme="neon-purple"] {
+    --primary-color: #b968ff;
+    --secondary-color: #ff6ec7;
+    --accent-color: #00ffff;
+
+    --text-primary: #b968ff;
+    --text-secondary: #d8a8ff;
+    --text-muted: #6a5080;
+
+    --border-color: rgba(185, 104, 255, 0.3);
+    --shadow-glow: 0 0 20px rgba(185, 104, 255, 0.4);
+    --shadow-glow-strong: 0 0 30px rgba(185, 104, 255, 0.6);
+    --shadow-glow-intense: 0 0 40px rgba(185, 104, 255, 0.8);
+
+    --bg-card: rgba(20, 10, 30, 0.85);
+    --bg-gradient-1: rgba(185, 104, 255, 0.1);
+    --bg-gradient-2: rgba(185, 104, 255, 0.05);
+}
+
+/* Theme: Ocean Blue (Deep Tech) */
+[data-theme="ocean-blue"] {
+    --primary-color: #00d4ff;
+    --secondary-color: #0088ff;
+    --accent-color: #00fff7;
+
+    --text-primary: #00d4ff;
+    --text-secondary: #70e4ff;
+    --text-muted: #406080;
+
+    --border-color: rgba(0, 212, 255, 0.3);
+    --shadow-glow: 0 0 20px rgba(0, 212, 255, 0.4);
+    --shadow-glow-strong: 0 0 30px rgba(0, 212, 255, 0.6);
+    --shadow-glow-intense: 0 0 40px rgba(0, 212, 255, 0.8);
+
+    --bg-card: rgba(10, 15, 30, 0.85);
+    --bg-gradient-1: rgba(0, 212, 255, 0.1);
+    --bg-gradient-2: rgba(0, 212, 255, 0.05);
+}
+
+/* Theme: Sunset Orange (Warm Tech) */
+[data-theme="sunset-orange"] {
+    --primary-color: #ff6b35;
+    --secondary-color: #ffaa00;
+    --accent-color: #ff0055;
+
+    --text-primary: #ff6b35;
+    --text-secondary: #ffaa70;
+    --text-muted: #806050;
+
+    --border-color: rgba(255, 107, 53, 0.3);
+    --shadow-glow: 0 0 20px rgba(255, 107, 53, 0.4);
+    --shadow-glow-strong: 0 0 30px rgba(255, 107, 53, 0.6);
+    --shadow-glow-intense: 0 0 40px rgba(255, 107, 53, 0.8);
+
+    --bg-card: rgba(30, 15, 10, 0.85);
+    --bg-gradient-1: rgba(255, 107, 53, 0.1);
+    --bg-gradient-2: rgba(255, 107, 53, 0.05);
+}
+
+/* Theme: Electric Red (Danger Mode) */
+[data-theme="electric-red"] {
+    --primary-color: #ff0055;
+    --secondary-color: #ff3366;
+    --accent-color: #ff0088;
+
+    --text-primary: #ff0055;
+    --text-secondary: #ff6688;
+    --text-muted: #805050;
+
+    --border-color: rgba(255, 0, 85, 0.3);
+    --shadow-glow: 0 0 20px rgba(255, 0, 85, 0.4);
+    --shadow-glow-strong: 0 0 30px rgba(255, 0, 85, 0.6);
+    --shadow-glow-intense: 0 0 40px rgba(255, 0, 85, 0.8);
+
+    --bg-card: rgba(30, 10, 15, 0.85);
+    --bg-gradient-1: rgba(255, 0, 85, 0.1);
+    --bg-gradient-2: rgba(255, 0, 85, 0.05);
+}
+
+/* Theme: Cyber Yellow (Golden Hacker) */
+[data-theme="cyber-yellow"] {
+    --primary-color: #ffd700;
+    --secondary-color: #ffed4e;
+    --accent-color: #ffaa00;
+
+    --text-primary: #ffd700;
+    --text-secondary: #ffe870;
+    --text-muted: #807050;
+
+    --border-color: rgba(255, 215, 0, 0.3);
+    --shadow-glow: 0 0 20px rgba(255, 215, 0, 0.4);
+    --shadow-glow-strong: 0 0 30px rgba(255, 215, 0, 0.6);
+    --shadow-glow-intense: 0 0 40px rgba(255, 215, 0, 0.8);
+
+    --bg-card: rgba(20, 20, 10, 0.85);
+    --bg-gradient-1: rgba(255, 215, 0, 0.1);
+    --bg-gradient-2: rgba(255, 215, 0, 0.05);
 }
