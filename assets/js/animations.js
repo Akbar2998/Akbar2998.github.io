@@ -8,7 +8,7 @@ class Animations {
         this.init();
     }
 
-    // Typing Animation
+    // Hacker-Style Typing Animation
     initTypingAnimation() {
         const typingText = document.querySelector('.typing-text');
         if (!typingText) return;
@@ -22,37 +22,77 @@ class Animations {
             'Ethical Hacker'
         ];
 
+        const hackerChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;:,.<>?';
+
         let titleIndex = 0;
         let charIndex = 0;
         let isDeleting = false;
-        let typingSpeed = 100;
+        let scrambleCount = 0;
+
+        const scrambleText = (targetText, currentLength) => {
+            let scrambled = '';
+            for (let i = 0; i < currentLength; i++) {
+                if (i < targetText.length - 1) {
+                    scrambled += targetText[i];
+                } else {
+                    scrambled += hackerChars[Math.floor(Math.random() * hackerChars.length)];
+                }
+            }
+            return scrambled;
+        };
 
         const typeEffect = () => {
             const currentTitle = titles[titleIndex];
 
             if (isDeleting) {
-                typingText.textContent = currentTitle.substring(0, charIndex - 1);
+                // Deleting with glitch effect
+                const deleteText = currentTitle.substring(0, charIndex);
+                if (Math.random() > 0.7) {
+                    typingText.textContent = scrambleText(deleteText, charIndex);
+                } else {
+                    typingText.textContent = deleteText;
+                }
                 charIndex--;
-                typingSpeed = 50;
+
+                if (charIndex === 0) {
+                    isDeleting = false;
+                    titleIndex = (titleIndex + 1) % titles.length;
+                    setTimeout(typeEffect, 500);
+                } else {
+                    setTimeout(typeEffect, 30);
+                }
             } else {
-                typingText.textContent = currentTitle.substring(0, charIndex + 1);
-                charIndex++;
-                typingSpeed = 100;
-            }
+                // Typing with scramble effect
+                if (scrambleCount < 3 && charIndex < currentTitle.length) {
+                    typingText.textContent = currentTitle.substring(0, charIndex) +
+                                           hackerChars[Math.floor(Math.random() * hackerChars.length)];
+                    scrambleCount++;
+                    setTimeout(typeEffect, 50);
+                } else {
+                    scrambleCount = 0;
+                    charIndex++;
+                    typingText.textContent = currentTitle.substring(0, charIndex);
 
-            if (!isDeleting && charIndex === currentTitle.length) {
-                isDeleting = true;
-                typingSpeed = 2000; // Pause at end
-            } else if (isDeleting && charIndex === 0) {
-                isDeleting = false;
-                titleIndex = (titleIndex + 1) % titles.length;
-                typingSpeed = 500; // Pause before starting new word
+                    if (charIndex === currentTitle.length) {
+                        isDeleting = true;
+                        setTimeout(typeEffect, 2000);
+                    } else {
+                        setTimeout(typeEffect, 80);
+                    }
+                }
             }
-
-            setTimeout(typeEffect, typingSpeed);
         };
 
-        typeEffect();
+        // Initial scramble effect
+        let initScramble = 0;
+        const initialEffect = setInterval(() => {
+            typingText.textContent = hackerChars[Math.floor(Math.random() * hackerChars.length)].repeat(5);
+            initScramble++;
+            if (initScramble > 10) {
+                clearInterval(initialEffect);
+                typeEffect();
+            }
+        }, 50);
     }
 
     // Skill Bars Animation
@@ -75,25 +115,108 @@ class Animations {
         });
     }
 
-    // Counter Animation for Stats
+    // World-Class Counter Animation with Digit Rolling
     initCounterAnimation() {
         const statsObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     const statNumbers = entry.target.querySelectorAll('.stat-number');
                     statNumbers.forEach(stat => {
-                        const target = parseInt(stat.textContent);
-                        let current = 0;
-                        const increment = target / 50;
-                        const timer = setInterval(() => {
-                            current += increment;
-                            if (current >= target) {
-                                stat.textContent = target + '+';
-                                clearInterval(timer);
-                            } else {
-                                stat.textContent = Math.floor(current) + '+';
+                        const targetText = stat.textContent;
+                        const target = parseInt(targetText);
+                        const hasPlusSign = targetText.includes('+');
+
+                        // Create digit rolling effect
+                        stat.style.position = 'relative';
+                        stat.style.display = 'inline-block';
+                        stat.style.overflow = 'hidden';
+                        stat.innerHTML = '';
+
+                        const targetStr = target.toString();
+                        const digits = targetStr.split('');
+
+                        // Create container for each digit
+                        digits.forEach((digit, index) => {
+                            const digitContainer = document.createElement('span');
+                            digitContainer.style.cssText = `
+                                display: inline-block;
+                                position: relative;
+                                width: 1ch;
+                                height: 1em;
+                                overflow: hidden;
+                                vertical-align: top;
+                            `;
+
+                            const digitRoller = document.createElement('span');
+                            digitRoller.style.cssText = `
+                                display: block;
+                                position: absolute;
+                                top: 0;
+                                left: 0;
+                                transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+                            `;
+
+                            // Create rolling numbers 0-9 and the target digit
+                            const rollNumbers = [];
+                            const rollCount = 10 + parseInt(digit);
+                            for (let i = 0; i <= rollCount; i++) {
+                                const num = document.createElement('div');
+                                num.textContent = i % 10;
+                                num.style.cssText = `
+                                    height: 1em;
+                                    line-height: 1em;
+                                    text-align: center;
+                                `;
+
+                                // Add glitch effect during roll
+                                if (i < rollCount - 1 && Math.random() > 0.7) {
+                                    num.style.color = 'var(--secondary-color)';
+                                    num.style.textShadow = '0 0 10px var(--secondary-color)';
+                                }
+
+                                digitRoller.appendChild(num);
+                                rollNumbers.push(num);
                             }
-                        }, 30);
+
+                            digitContainer.appendChild(digitRoller);
+                            stat.appendChild(digitContainer);
+
+                            // Animate with delay for each digit
+                            setTimeout(() => {
+                                const offset = rollCount * -1; // Move up
+                                digitRoller.style.transform = `translateY(${offset}em)`;
+
+                                // Add glow effect on completion
+                                setTimeout(() => {
+                                    digitContainer.style.animation = 'neon-pulse 1s ease-in-out';
+                                }, 800);
+                            }, index * 150);
+                        });
+
+                        // Add plus sign with fade-in effect
+                        if (hasPlusSign) {
+                            const plusSign = document.createElement('span');
+                            plusSign.textContent = '+';
+                            plusSign.style.cssText = `
+                                display: inline-block;
+                                opacity: 0;
+                                transform: scale(0);
+                                transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+                                margin-left: 2px;
+                            `;
+                            stat.appendChild(plusSign);
+
+                            setTimeout(() => {
+                                plusSign.style.opacity = '1';
+                                plusSign.style.transform = 'scale(1)';
+                                plusSign.style.textShadow = '0 0 20px var(--primary-color)';
+                            }, digits.length * 150 + 800);
+                        }
+
+                        // Add particle burst effect on completion
+                        setTimeout(() => {
+                            this.createCounterParticleBurst(stat);
+                        }, digits.length * 150 + 1000);
                     });
                     statsObserver.unobserve(entry.target);
                 }
@@ -103,6 +226,44 @@ class Animations {
         const aboutStats = document.querySelector('.about-stats');
         if (aboutStats) {
             statsObserver.observe(aboutStats);
+        }
+    }
+
+    // Particle burst effect for counter completion
+    createCounterParticleBurst(element) {
+        const rect = element.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+
+        for (let i = 0; i < 8; i++) {
+            const particle = document.createElement('div');
+            particle.style.cssText = `
+                position: fixed;
+                left: ${centerX}px;
+                top: ${centerY}px;
+                width: 4px;
+                height: 4px;
+                background: var(--primary-color);
+                border-radius: 50%;
+                pointer-events: none;
+                z-index: 9999;
+                box-shadow: 0 0 10px var(--primary-color);
+            `;
+            document.body.appendChild(particle);
+
+            const angle = (Math.PI * 2 * i) / 8;
+            const velocity = 3;
+            const distance = 50;
+
+            setTimeout(() => {
+                particle.style.transition = 'all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+                particle.style.left = `${centerX + Math.cos(angle) * distance}px`;
+                particle.style.top = `${centerY + Math.sin(angle) * distance}px`;
+                particle.style.opacity = '0';
+                particle.style.transform = 'scale(0)';
+            }, 50);
+
+            setTimeout(() => particle.remove(), 700);
         }
     }
 

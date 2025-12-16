@@ -137,6 +137,12 @@
     font-weight: 700;
     color: var(--primary-color);
     font-family: var(--font-code);
+    text-shadow:
+        0 0 10px var(--primary-color),
+        0 0 20px var(--primary-color);
+    line-height: 1.2;
+    min-height: 3rem;
+    position: relative;
 }
 
 .stat-label {
