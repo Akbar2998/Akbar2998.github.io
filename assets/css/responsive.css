@@ -308,10 +308,3 @@
     }
 }
 
-/* Dark Mode Support (already default, but for systems that prefer light) */
-@media (prefers-color-scheme: light) {
-    /* Override if needed - currently keeping dark theme */
-    :root {
-        /* Force dark theme */
-    }
-}
