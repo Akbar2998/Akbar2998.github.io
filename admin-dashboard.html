@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Blog Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/variables.css">
+    <link rel="stylesheet" href="assets/css/admin.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <i class="fas fa-terminal"></i>
+                <h2>ADMIN PANEL</h2>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-tab="posts">
+                    <i class="fas fa-blog"></i>
+                    <span>Blog Posts</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="new-post">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>New Post</span>
+                </a>
+                <a href="index.html" class="nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>View Site</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <i class="fas fa-user-shield"></i>
+                    <span id="adminUsername">Admin</span>
+                </div>
+                <button id="logoutBtn" class="btn-logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="dashboard-header">
+                <h1>Blog Management System</h1>
+                <div class="header-stats">
+                    <div class="stat-card">
+                        <i class="fas fa-file-alt"></i>
+                        <div>
+                            <span class="stat-number" id="totalPosts">0</span>
+                            <span class="stat-label">Total Posts</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Blog Posts Tab -->
+            <section id="postsTab" class="tab-content active">
+                <div class="content-header">
+                    <h2>All Blog Posts</h2>
+                    <button class="btn-primary" onclick="switchTab('new-post')">
+                        <i class="fas fa-plus"></i> Create New Post
+                    </button>
+                </div>
+
+                <div id="postsContainer" class="posts-container">
+                    <!-- Posts will be loaded here -->
+                </div>
+            </section>
+
+            <!-- New Post Tab -->
+            <section id="newPostTab" class="tab-content">
+                <div class="content-header">
+                    <h2>Create New Post</h2>
+                </div>
+
+                <form id="newPostForm" class="post-form">
+                    <div class="form-group">
+                        <label for="postTitle">Post Title *</label>
+                        <input
+                            type="text"
+                            id="postTitle"
+                            class="form-control"
+                            placeholder="Enter post title"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="postCategory">Category *</label>
+                        <select id="postCategory" class="form-control" required>
+                            <option value="">Select category</option>
+                            <option value="Cybersecurity">Cybersecurity</option>
+                            <option value="Programming">Programming</option>
+                            <option value="Technology">Technology</option>
+                            <option value="Tutorial">Tutorial</option>
+                            <option value="News">News</option>
+                            <option value="Personal">Personal</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="postExcerpt">Excerpt *</label>
+                        <textarea
+                            id="postExcerpt"
+                            class="form-control"
+                            placeholder="Short description (max 200 characters)"
+                            rows="3"
+                            maxlength="200"
+                            required
+                        ></textarea>
+                        <small class="char-count">0 / 200</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="postContent">Content *</label>
+                        <textarea
+                            id="postContent"
+                            class="form-control"
+                            placeholder="Write your post content here..."
+                            rows="15"
+                            required
+                        ></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="postTags">Tags (comma-separated)</label>
+                        <input
+                            type="text"
+                            id="postTags"
+                            class="form-control"
+                            placeholder="e.g., python, security, tutorial"
+                        >
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">
+                            <i class="fas fa-check"></i> Publish Post
+                        </button>
+                        <button type="button" class="btn-secondary" onclick="resetForm()">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                    </div>
+                </form>
+            </section>
+        </main>
+    </div>
+
+    <!-- Success Toast -->
+    <div id="toast" class="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">Action completed successfully!</span>
+    </div>
+
+    <script src="assets/js/blog.js"></script>
+    <script src="assets/js/admin.js"></script>
+</body>
+</html>
