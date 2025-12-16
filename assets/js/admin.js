@@ -2,15 +2,33 @@
  * Admin Dashboard JavaScript
  */
 
-// Check authentication
+// Check authentication with session timeout
 function checkAuth() {
-    const isAuth = sessionStorage.getItem('adminAuth');
+    const authToken = sessionStorage.getItem('adminAuth');
     const adminUser = sessionStorage.getItem('adminUser');
+    const authTimestamp = sessionStorage.getItem('authTimestamp');
 
-    if (!isAuth || isAuth !== 'authenticated') {
+    // Check if auth token exists
+    if (!authToken || !adminUser || !authTimestamp) {
         window.location.href = 'admin-login.html';
         return false;
     }
+
+    // Check session timeout (2 hours)
+    const SESSION_TIMEOUT = 2 * 60 * 60 * 1000; // 2 hours in milliseconds
+    const currentTime = Date.now();
+    const sessionAge = currentTime - parseInt(authTimestamp);
+
+    if (sessionAge > SESSION_TIMEOUT) {
+        // Session expired
+        sessionStorage.clear();
+        alert('Session expired. Please login again.');
+        window.location.href = 'admin-login.html';
+        return false;
+    }
+
+    // Update timestamp to keep session alive
+    sessionStorage.setItem('authTimestamp', currentTime.toString());
 
     // Display admin username
     const usernameEl = document.getElementById('adminUsername');

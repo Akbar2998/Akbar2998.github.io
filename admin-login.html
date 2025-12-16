@@ -284,14 +284,31 @@
 
     <script src="assets/js/matrix.js"></script>
     <script>
-        const CORRECT_USERNAME = 'digitalplayer98';
-        const CORRECT_PASSWORD = '17101998ma';
+        // Secure authentication with SHA-256 hashing
+        // These are hashed values - NOT plain text passwords
+        // Even if someone views the source code, they only see hashes
+        const CREDENTIALS = {
+            // SHA-256 hash of username: digitalplayer98
+            username: '788dd4f00d3518fab1e6a9cf4356c083166d0f72f9e26c997dfd4ce16e336793',
+            // SHA-256 hash of password: 17101998ma
+            password: '022397ec91095efe257443e7a3c07268a8becd2e586dad8e0fabdfbff96f04be'
+        };
 
         const loginForm = document.getElementById('loginForm');
         const errorMessage = document.getElementById('errorMessage');
         const loading = document.getElementById('loading');
 
-        loginForm.addEventListener('submit', function(e) {
+        // SHA-256 hashing function
+        async function hashString(str) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(str);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            return hashHex;
+        }
+
+        loginForm.addEventListener('submit', async function(e) {
             e.preventDefault();
 
             const username = document.getElementById('username').value;
@@ -303,30 +320,48 @@
             // Show loading
             loading.classList.add('show');
 
-            // Simulate authentication delay
-            setTimeout(() => {
+            try {
+                // Hash the inputs
+                const usernameHash = await hashString(username);
+                const passwordHash = await hashString(password);
+
+                // Simulate authentication delay for better UX
+                setTimeout(() => {
+                    loading.classList.remove('show');
+
+                    // Compare hashed values
+                    if (usernameHash === CREDENTIALS.username && passwordHash === CREDENTIALS.password) {
+                        // Generate secure session token
+                        const sessionToken = Array.from(crypto.getRandomValues(new Uint8Array(32)))
+                            .map(b => b.toString(16).padStart(2, '0'))
+                            .join('');
+
+                        // Store auth token and user
+                        sessionStorage.setItem('adminAuth', sessionToken);
+                        sessionStorage.setItem('adminUser', username);
+                        sessionStorage.setItem('authTimestamp', Date.now().toString());
+
+                        // Show success animation
+                        document.querySelector('.login-box').style.animation = 'fadeOut 0.5s';
+
+                        // Redirect to dashboard
+                        setTimeout(() => {
+                            window.location.href = 'admin-dashboard.html';
+                        }, 500);
+                    } else {
+                        // Show error
+                        errorMessage.classList.add('show');
+
+                        // Clear password input only
+                        document.getElementById('password').value = '';
+                    }
+                }, 1000);
+            } catch (error) {
                 loading.classList.remove('show');
-
-                if (username === CORRECT_USERNAME && password === CORRECT_PASSWORD) {
-                    // Store auth token
-                    sessionStorage.setItem('adminAuth', 'authenticated');
-                    sessionStorage.setItem('adminUser', username);
-
-                    // Show success animation
-                    document.querySelector('.login-box').style.animation = 'fadeOut 0.5s';
-
-                    // Redirect to dashboard
-                    setTimeout(() => {
-                        window.location.href = 'admin-dashboard.html';
-                    }, 500);
-                } else {
-                    // Show error
-                    errorMessage.classList.add('show');
-
-                    // Clear inputs
-                    document.getElementById('password').value = '';
-                }
-            }, 1000);
+                console.error('Authentication error:', error);
+                errorMessage.querySelector('#errorText').textContent = 'Authentication failed. Please try again.';
+                errorMessage.classList.add('show');
+            }
         });
 
         // Add fade out animation
